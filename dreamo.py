@@ -256,12 +256,12 @@ def clean_hook(diffusion_model):
         del diffusion_model.old_forward_orig_for_dreamo
         del diffusion_model.old_forward_for_dreamo
 
-def dreamo_outer_sample_wrappers_with_override(wrapper_executor, noise, latent_image, sampler, sigmas, denoise_mask=None, callback=None, disable_pbar=False, seed=None):
+def dreamo_outer_sample_wrappers_with_override(wrapper_executor, noise, latent_image, sampler, sigmas, denoise_mask=None, callback=None, disable_pbar=False, seed=None, latent_shapes=None):
     cfg_guider = wrapper_executor.class_obj
     diffusion_model = cfg_guider.model_patcher.model.diffusion_model
     set_hook(diffusion_model, dreamo_forward_orig, dreamo_forward)
     try :
-        out = wrapper_executor(noise, latent_image, sampler, sigmas, denoise_mask, callback, disable_pbar, seed)
+        out = wrapper_executor(noise, latent_image, sampler, sigmas, denoise_mask, callback, disable_pbar, seed, latent_shapes=latent_shapes)
     finally:
         clean_hook(diffusion_model)
 
